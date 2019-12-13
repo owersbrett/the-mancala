@@ -1,0 +1,19 @@
+#mancala {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: blue;
+
+}
+
+.scoreAndSide {
+    border: 1px solid black;
+    height: 50px;
+    width: 50px;
+}
+
+html{
+    width: 100vw;
+    height: 100vh;
+}
