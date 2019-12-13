@@ -1,1 +1,77 @@
 // HOME
+#game-container {
+    background-color: rgba(0, 0, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+#mancala-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 40vh 0px 5vh 0px;
+
+
+    .playerTwo {
+        padding: 0px 10px 0px 0px;
+    }
+    
+    .playerOne {
+        padding: 0px 0px 0px 10px;
+
+    }
+    
+}
+
+#start-game {
+
+}
+
+
+// .side {
+//     height: 49px;
+//     width: 300px;
+//     background-color: white;
+//     border: 1px solid black;
+// }
+
+.score-left, .score-right {
+
+    height: 98px;
+    width: 50px;
+    background-color: #C19A6B;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.score-left{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.score-right{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.side-one, .side-two {
+    display: flex;
+}
+
+.cup {
+    height: 48px;
+    width:  50px;
+    background-color: #C19A6B;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
