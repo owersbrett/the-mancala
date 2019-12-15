@@ -87,14 +87,113 @@ function resetCup(e) {
     e.target.dataset.stones = 0;
 }
 
-function addToCup(whichCup) {  
-    let currentCup = document.getElementById(whichCup);     //this is when i determined how to effectively refactor
+function addTo(thisCup) {  
+    console.log('this is the current cup' + thisCup);
+    let currentCup = document.getElementById(thisCup);     //this is when i determined how to effectively refactor
+    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
+    currentCup.innerHTML = currentCup.dataset.stones;
+    
 
 }
 
+// function checkFor(stones) {
+//     // console.log('there are this many stones: ' + stones);
+//     if (stones === 0){
+//         switchTurns();
+//         break;
+//     }
+// }
+
+function captureCheck(landing, adjacent, thePlayer){
+    let landingCup = parseInt(document.getElementById(landing).innerHTML);
+    let adjacentCup = parseInt(document.getElementById(adjacent).innerHTML);
+    let currentScore = 0;
+    let capturedStones = 0;
+
+    console.log(landingCup);
+    console.log(adjacentCup);
+
+    if (landingCup === 1){
+        switch(landing){
+            case "cup-1":
+            case "cup-2":
+            case "cup-3":
+            case "cup-4":
+            case "cup-5":
+            case "cup-6":
+                if (thePlayer === "playerOne"){
+                    capturedStones = landingCup + adjacentCup;
+                    currentScore = parseInt(document.getElementById("cup-7").innerHTML);
+                    document.getElementById("cup-7").innerHTML = capturedStones + currentScore;
+                    document.getElementById("cup-7").dataset.stones = capturedStones + currentScore;
+                    
+                    document.getElementById(landing).innerHTML = 0;
+                    document.getElementById(adjacent).innerHTML = 0;
+                    document.getElementById(landing).dataset.stones = 0;
+                    document.getElementById(adjacent).dataset.stones = 0;
+                }
+                break;
+            case "cup-8":
+            case "cup-9":
+            case "cup-10":
+            case "cup-11":
+            case "cup-12":
+            case "cup-13":
+                if (thePlayer === "playerTwo"){
+                    capturedStones = landingCup + adjacentCup;
+                    currentScore = parseInt(document.getElementById("cup-0").innerHTML);
+                    document.getElementById("cup-0").innerHTML = capturedStones + currentScore;
+                    document.getElementById("cup-0").dataset.stones = capturedStones + currentScore;
+                    
+                    document.getElementById(landing).innerHTML = 0;
+                    document.getElementById(adjacent).innerHTML = 0;
+                    document.getElementById(landing).dataset.stones = 0;
+                    document.getElementById(adjacent).dataset.stones = 0;
+                }
+                break;
+            default: 
+                break;
+                
+        }
+    }
+
+    
+}
+
+// function landHome(whichHome, stones) {
+//     if (stones === 0){
+//         let homeLander = document.getElementById(whichHome)
+//         if (homeLander === "cup-0"){
+//             dontChangeTurns()
+//         }
+        
+//     }
+// }
+
+function choosePlayer(theCupId) {
+    switch (theCupId){
+        case "cup-1":
+        case "cup-2":
+        case "cup-3":
+        case "cup-4":
+        case "cup-5":
+        case "cup-6":
+            return "playerOne";
+        case "cup-8":
+        case "cup-9":
+        case "cup-10":
+        case "cup-11":
+        case "cup-12":
+        case "cup-13":
+            return "playerTwo";
+    }
+}
+
+
 function addToCups(e, stonesToDrop, check) {
-    let deacc = stonesToDrop;                               // this will decrease as the stones are dropped
-    let currentCup = "";                                    // this will be assigned to whichever cup is getting a new stone
+    let playerFinder = e.target.id;
+    let player = choosePlayer(playerFinder);
+    let stonesLeft = stonesToDrop;                               // this will decrease as the stones are dropped
     let theCheck = check;                                   // may not need this, will test
     let theSwitch = (theCheck === 0 ? e.target.id : "cup-0");   // this will determine where the cups begin to disperse
     
@@ -102,292 +201,150 @@ function addToCups(e, stonesToDrop, check) {
 
         switch (theSwitch){                                 // start here after cup 13. this is also a score cup
             case "cup-0":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    switchTurns();
                     break;
                 }
-                if (theSwitch == "cup-0") {
-                    currentCup = document.getElementById("cup-0");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
+                if ((theSwitch !== "cup-0" || theCheck > 0) && (player === "playerTwo")) {
+                    addTo("cup-0");
+                    stonesLeft -= 1;
+                    // landHomeCheck("cup-0", stonesLeft);
                 }
             case "cup-1":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    switchTurns();
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-1") {
-                    currentCup = document.getElementById("cup-1");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-1").dataset.stones === 0) && document.getElementById("cup-13".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-1").dataset.stones) + parseInt(document.getElementById("cup-13").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-1").dataset.stones = 0;
-                        document.getElementById("cup-13").dataset.stones = 0;
-                        document.getElementById("cup-1").dataset.innerHTML = 0;
-                        document.getElementById("cup-13").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-1" || theCheck > 0) {
+                    addTo("cup-1");
+                    stonesLeft -= 1;
                 }
             case "cup-2":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-1","cup-13", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-2") {
-                    currentCup = document.getElementById("cup-2");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-2").dataset.stones === 0) && document.getElementById("cup-12".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-2").dataset.stones) + parseInt(document.getElementById("cup-12").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-2").dataset.stones = 0;
-                        document.getElementById("cup-12").dataset.stones = 0;
-                        document.getElementById("cup-2").dataset.innerHTML = 0;
-                        document.getElementById("cup-12").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-2" || theCheck > 0) {
+                    addTo("cup-2");
+                    stonesLeft -= 1;
                 }
             case "cup-3":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-2", "cup-12", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-3") {
-                    currentCup = document.getElementById("cup-3");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-3").dataset.stones === 0) && document.getElementById("cup-11".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-3").dataset.stones) + parseInt(document.getElementById("cup-11").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-3").dataset.stones = 0;
-                        document.getElementById("cup-11").dataset.stones = 0;
-                        document.getElementById("cup-3").dataset.innerHTML = 0;
-                        document.getElementById("cup-11").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-3" || theCheck > 0) {
+                    addTo("cup-3");
+                    stonesLeft -= 1;
                 }
             case "cup-4":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-3", "cup-11", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-4") {
-                    currentCup = document.getElementById("cup-4");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-4").dataset.stones === 0) && document.getElementById("cup-10".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-4").dataset.stones) + parseInt(document.getElementById("cup-10").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-4").dataset.stones = 0;
-                        document.getElementById("cup-10").dataset.stones = 0;
-                        document.getElementById("cup-4").dataset.innerHTML = 0;
-                        document.getElementById("cup-10").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-4" || theCheck > 0) {
+                    addTo("cup-4");
+                    stonesLeft -= 1;
                 }
             case "cup-5":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-4", "cup-10", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-5") {
-                    currentCup = document.getElementById("cup-5");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-5").dataset.stones === 0) && document.getElementById("cup-9".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-5").dataset.stones) + parseInt(document.getElementById("cup-9").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-5").dataset.stones = 0;
-                        document.getElementById("cup-9").dataset.stones = 0;
-                        document.getElementById("cup-5").dataset.innerHTML = 0;
-                        document.getElementById("cup-9").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-5" || theCheck > 0) {
+                    addTo("cup-5");
+                    stonesLeft -= 1;
                 }
             case "cup-6":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-5", "cup-9", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-6") {
-                    currentCup = document.getElementById("cup-6");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-6").dataset.stones === 0) && document.getElementById("cup-8".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-6").dataset.stones) + parseInt(document.getElementById("cup-8").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-7").dataset.stones);
-                        document.getElementById("cup-6").dataset.stones = 0;
-                        document.getElementById("cup-8").dataset.stones = 0;
-                        document.getElementById("cup-6").dataset.innerHTML = 0;
-                        document.getElementById("cup-8").dataset.innerHTML = 0;
-                        document.getElementById("cup-7").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-7").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-6" || theCheck > 0) {
+                    addTo("cup-6");
+                    stonesLeft -= 1;
                 }
             case "cup-7":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-6", "cup-8", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-7") {
-                    currentCup = document.getElementById("cup-7");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
+                if ((theSwitch !== "cup-7" || theCheck > 0) && (player === "playerOne")) {
+                    addTo("cup-7");
+                    stonesLeft -= 1;
+                    // landHomeCheck("cup-7", stonesLeft);
                 }
             case "cup-8":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    switchTurns();
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-8") {
-                    currentCup = document.getElementById("cup-8");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-8").dataset.stones === 0) && document.getElementById("cup-6".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-8").dataset.stones) + parseInt(document.getElementById("cup-6").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-8").dataset.stones = 0;
-                        document.getElementById("cup-6").dataset.stones = 0;
-                        document.getElementById("cup-8").dataset.innerHTML = 0;
-                        document.getElementById("cup-6").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-8" || theCheck > 0) {
+                    addTo("cup-8");
+                    stonesLeft -= 1;
                 }
             case "cup-9":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-8", "cup-6", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-9") {
-                    currentCup = document.getElementById("cup-9");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-9").dataset.stones === 0) && document.getElementById("cup-5".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-9").dataset.stones) + parseInt(document.getElementById("cup-5").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-9").dataset.stones = 0;
-                        document.getElementById("cup-5").dataset.stones = 0;
-                        document.getElementById("cup-9").dataset.innerHTML = 0;
-                        document.getElementById("cup-5").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-9" || theCheck > 0) {
+                    addTo("cup-9");
+                    stonesLeft -= 1;
                 }
             case "cup-10":
-                if (deacc === 0){
+                if (stonesLeft === 0) {
+                    captureCheck("cup-9", "cup-5", player);
+                    switchTurns();
                     break;
                 }
-                if (theSwitch !== "cup-10") {
-                    currentCup = document.getElementById("cup-10");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-10").dataset.stones === 0) && document.getElementById("cup-4".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-10").dataset.stones) + parseInt(document.getElementById("cup-4").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-10").dataset.stones = 0;
-                        document.getElementById("cup-4").dataset.stones = 0;
-                        document.getElementById("cup-10").dataset.innerHTML = 0;
-                        document.getElementById("cup-4").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
-                        switchTurns();
-                    }
+                if (theSwitch !== "cup-10" || theCheck > 0) {
+                    addTo("cup-10");
+                    stonesLeft -= 1;
                 }
             case "cup-11":
-                if (deacc === 0){
-                    break;
-                }
-                if (theSwitch !== "cup-11") {
-                    currentCup = document.getElementById("cup-11");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-11").dataset.stones === 0) && document.getElementById("cup-3".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-11").dataset.stones) + parseInt(document.getElementById("cup-3").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-11").dataset.stones = 0;
-                        document.getElementById("cup-3").dataset.stones = 0;
-                        document.getElementById("cup-11").dataset.innerHTML = 0;
-                        document.getElementById("cup-3").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-10", "cup-4", player);
                         switchTurns();
-                    }
+                        break;
+                }
+                if (theSwitch !== "cup-11" || theCheck > 0) {
+                    addTo("cup-11");
+                    stonesLeft -= 1;
                 }
             case "cup-12":
-                if (deacc === 0){
-                    break;
-                }
-                if (theSwitch !== "cup-12") {
-                    currentCup = document.getElementById("cup-12");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-12").dataset.stones === 0) && document.getElementById("cup-2".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-12").dataset.stones) + parseInt(document.getElementById("cup-2").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-12").dataset.stones = 0;
-                        document.getElementById("cup-2").dataset.stones = 0;
-                        document.getElementById("cup-12").dataset.innerHTML = 0;
-                        document.getElementById("cup-2").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-11", "cup-3", player);
                         switchTurns();
-                    }
+                        break;
+                }
+                if (theSwitch !== "cup-12" || theCheck > 0) {
+                    addTo("cup-12");
+                    stonesLeft -= 1;
                 }
             case "cup-13":
-                if (deacc === 0){
-                    break;
-                }
-                if (theSwitch !== "cup-13") {
-                    currentCup = document.getElementById("cup-13");
-                    currentCup.dataset.stones = 1 + parseInt(currentCup.dataset.stones);
-                    currentCup.innerHTML = currentCup.dataset.stones;
-                    deacc -= 1;
-                    if (deacc === 0 && ((document.getElementById("cup-13").dataset.stones === 0) && document.getElementById("cup-1".dataset.stones !== 0))){
-                        let addThese = parseInt(document.getElementById("cup-13").dataset.stones) + parseInt(document.getElementById("cup-1").dataset.stones);
-                        let toThis = parseInt(document.getElementById("cup-0").dataset.stones);
-                        document.getElementById("cup-13").dataset.stones = 0;
-                        document.getElementById("cup-1").dataset.stones = 0;
-                        document.getElementById("cup-13").dataset.innerHTML = 0;
-                        document.getElementById("cup-1").dataset.innerHTML = 0;
-                        document.getElementById("cup-0").dataset.stones = addThese + toThis;
-                        document.getElementById("cup-0").innerHTML = addThese + toThis;
-                    } else {
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-12", "cup-2", player);
                         switchTurns();
-                    }
+                        break;
                 }
-                if (deacc > 0){
+                if (theSwitch !== "cup-13" || theCheck > 0) {
+                    addTo("cup-13");
+                    stonesLeft -= 1;
+                }
+                if (stonesLeft > 0){
+                    captureCheck("cup-13", "cup-1", player);
                     theCheck += 1;
-                    addToCups("cup-0", deacc);
+                    addToCups(e, stonesLeft, theCheck);
                 }
         }
     }
