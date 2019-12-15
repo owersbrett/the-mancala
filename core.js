@@ -201,148 +201,142 @@ function addToCups(e, stonesToDrop, check) {
 
         switch (theSwitch){                                 // start here after cup 13. this is also a score cup
             case "cup-0":
-                if (stonesLeft === 0) {
-                    switchTurns();
-                    break;
-                }
                 if ((theSwitch !== "cup-0" || theCheck > 0) && (player === "playerTwo")) {
                     addTo("cup-0");
                     stonesLeft -= 1;
-                    // landHomeCheck("cup-0", stonesLeft);
+                    if (stonesLeft === 0){
+                        break;
+                    }
                 }
             case "cup-1":
-                if (stonesLeft === 0) {
-                    switchTurns();
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-1" || theCheck > 0) {
                     addTo("cup-1");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0){
+                        captureCheck("cup-1","cup-13", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-2":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-1","cup-13", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-2" || theCheck > 0) {
                     addTo("cup-2");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-2", "cup-12", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-3":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-2", "cup-12", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-3" || theCheck > 0) {
                     addTo("cup-3");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-3", "cup-11", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-4":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-3", "cup-11", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-4" || theCheck > 0) {
                     addTo("cup-4");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-4", "cup-10", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-5":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-4", "cup-10", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-5" || theCheck > 0) {
                     addTo("cup-5");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-5", "cup-9", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-6":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-5", "cup-9", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-6" || theCheck > 0) {
                     addTo("cup-6");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-6", "cup-8", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-7":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-6", "cup-8", player);
-                    switchTurns();
-                    break;
-                }
-                if ((theSwitch !== "cup-7" || theCheck > 0) && (player === "playerOne")) {
+                if (player === "playerOne") {
                     addTo("cup-7");
                     stonesLeft -= 1;
-                    // landHomeCheck("cup-7", stonesLeft);
+                    if (stonesLeft === 0){
+                        break;
+                    }
                 }
             case "cup-8":
-                if (stonesLeft === 0) {
-                    switchTurns();
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-8" || theCheck > 0) {
                     addTo("cup-8");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-8", "cup-6", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-9":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-8", "cup-6", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-9" || theCheck > 0) {
                     addTo("cup-9");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0) {
+                        captureCheck("cup-9", "cup-5", player);
+                        switchTurns();
+                        break;
+                    }
                 }
             case "cup-10":
-                if (stonesLeft === 0) {
-                    captureCheck("cup-9", "cup-5", player);
-                    switchTurns();
-                    break;
-                }
                 if (theSwitch !== "cup-10" || theCheck > 0) {
                     addTo("cup-10");
                     stonesLeft -= 1;
-                }
-            case "cup-11":
                     if (stonesLeft === 0) {
                         captureCheck("cup-10", "cup-4", player);
                         switchTurns();
                         break;
+                    }
                 }
+            case "cup-11":
                 if (theSwitch !== "cup-11" || theCheck > 0) {
                     addTo("cup-11");
                     stonesLeft -= 1;
-                }
-            case "cup-12":
                     if (stonesLeft === 0) {
                         captureCheck("cup-11", "cup-3", player);
                         switchTurns();
                         break;
+                    }
                 }
+            case "cup-12":
                 if (theSwitch !== "cup-12" || theCheck > 0) {
                     addTo("cup-12");
                     stonesLeft -= 1;
-                }
-            case "cup-13":
                     if (stonesLeft === 0) {
                         captureCheck("cup-12", "cup-2", player);
                         switchTurns();
                         break;
+                    }
                 }
+            case "cup-13":
                 if (theSwitch !== "cup-13" || theCheck > 0) {
                     addTo("cup-13");
                     stonesLeft -= 1;
+                    if (stonesLeft === 0){
+                        captureCheck("cup-13", "cup-1", player);
+                        switchTurns();
+                        break;
+                    }
                 }
                 if (stonesLeft > 0){
-                    captureCheck("cup-13", "cup-1", player);
                     theCheck += 1;
                     addToCups(e, stonesLeft, theCheck);
                 }
