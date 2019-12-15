@@ -18,7 +18,6 @@ class Mancala{
     resetGame(){
         this.gameOver = false;
         this.coinFlip();
-        this.startGame();
     }
     
     startGame(){
@@ -92,18 +91,4 @@ arrayMancala.resetGame();
 
 console.log(arrayMancala.playerOne);
 console.log(arrayMancala.gameBoard);
-
-
-
-const inquirer = require('inquirer')
-
-var questions = [{
-    type: 'input',
-    name: 'name',
-    message: "What's your name?"
-}]
-
-inquirer.prompt(questions).then(answers => {
-    console.log(`Hi ${answers['name']}!`)
-})
 
